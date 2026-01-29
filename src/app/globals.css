@@ -1,26 +1,231 @@
-@import "tailwindcss";
+/* src/app/globals.css */
+@import "tailwindcss/preflight";
+@import "tailwindcss/utilities"; 
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --foreground-rgb: 255, 255, 255;
+  --background-start-rgb: 0, 0, 0;
+  --background-end-rgb: 0, 0, 0;
+  --accent-red: 255, 0, 0;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@layer base {
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    color: rgb(var(--foreground-rgb));
+    background: linear-gradient(
+        to bottom,
+        transparent,
+        rgb(var(--background-end-rgb))
+      )
+      rgb(var(--background-start-rgb));
+    overflow-x: hidden;
+    min-height: 100vh;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer utilities {
+  /* Animações personalizadas */
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+  }
+  
+  @keyframes pulse-glow {
+    0%, 100% { opacity: 0.7; }
+    50% { opacity: 1; }
+  }
+  
+  @keyframes spin-slow {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  
+  @keyframes spiral {
+    from { transform: rotate(0deg) scale(1); }
+    to { transform: rotate(360deg) scale(1.1); }
+  }
+  
+  @keyframes text-flicker {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+  }
+  
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+  
+  .animate-pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+  
+  .animate-spin-slow {
+    animation: spin-slow 3s linear infinite;
+  }
+  
+  .animate-spiral {
+    animation: spiral 5s linear infinite;
+  }
+  
+  .animate-text-flicker {
+    animation: text-flicker 1.5s ease-in-out infinite;
+  }
+  
+  /* Efeitos de brilho */
+  .glow-red {
+    filter: drop-shadow(0 0 10px rgba(255, 0, 0, 0.7));
+  }
+  
+  .glow-red-strong {
+    filter: drop-shadow(0 0 20px rgba(255, 0, 0, 0.9));
+  }
+  
+  .text-glow-red {
+    text-shadow: 0 0 10px rgba(255, 0, 0, 0.7),
+                 0 0 20px rgba(255, 0, 0, 0.5),
+                 0 0 30px rgba(255, 0, 0, 0.3);
+  }
+  
+  /* Gradientes */
+  .bg-gradient-red {
+    background: linear-gradient(135deg, rgba(255,0,0,0.1) 0%, rgba(255,0,0,0.05) 100%);
+  }
+  
+  .border-gradient-red {
+    border-image: linear-gradient(135deg, rgba(255,0,0,0.3), rgba(255,0,0,0.1)) 1;
+  }
+  
+  /* Scrollbar personalizada */
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: #000;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(to bottom, #FF0000, #990000);
+    border-radius: 5px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(to bottom, #FF3333, #CC0000);
+  }
+  
+  /* Seleção de texto */
+  ::selection {
+    background-color: rgba(255, 0, 0, 0.3);
+    color: white;
+  }
+  
+  /* Placeholder styling */
+  ::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+  }
+  
+  /* Transições suaves */
+  .transition-3d {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  /* Container responsivo */
+  .container-responsive {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  @media (min-width: 640px) {
+    .container-responsive {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+  }
+  @media (min-width: 1024px) {
+    .container-responsive {
+      padding-left: 2rem;
+      padding-right: 2rem;
+    }
+  }
+  
+  /* Aspect ratios úteis */
+  .aspect-wonderland {
+    aspect-ratio: 16/9;
+  }
+  
+  /* Efeito de vidro */
+  .glass-effect {
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 0, 0, 0.2);
+  }
+  
+  /* Tooltip */
+  .tooltip-red::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 5px;
+    border-style: solid;
+    border-color: #FF0000 transparent transparent transparent;
+  }
+}
+
+/* Classes para Three.js canvas */
+canvas {
+  display: block;
+  outline: none;
+}
+
+/* Classes para diferentes estados */
+.entering-wonderland {
+  animation: pulse-glow 2s ease-in-out infinite;
+  background: linear-gradient(to bottom, #000, rgba(139, 0, 0, 0.2));
+}
+
+.in-wonderland {
+  background: linear-gradient(135deg, #000, rgba(77, 1, 1, 0.1), #000);
+} 
+
+/* Responsividade para móvel */
+@media (max-width: 768px) {
+  .mobile-optimized {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+  
+  .mobile-hidden {
+    display: none;
+  }
+  
+  .mobile-text-center {
+    text-align: center;
+  }
+}
+
+/* Impressão */
+@media print {
+  .no-print {
+    display: none;
+  }
 }
