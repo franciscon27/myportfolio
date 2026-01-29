@@ -1,41 +1,36 @@
-// src/app/page.tsx
 'use client';
 
-import { Suspense } from 'react';
-import dynamic from 'next/dynamic';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import Rabbit from '../components/Rabbit';
+import '../app/globals.css';
 
-// Carregamento dinâmico para melhor performance do fluxo 2D→3D
-const AnimationController = dynamic(
-  () => import('@/components/AnimationController'),
-  { 
-    ssr: false,
-    loading: () => (
-      <div className="min-h-screen bg-black flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-16 h-16 border-4 border-red-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-white font-mono">Loading Wonderland...</p>
-        </div>
-      </div>
-    )
-  }
-);
+export default function Landing() {
+  const router = useRouter();
+  const [started, setStarted] = useState(false);
 
-export default function HomePage() {
+  useEffect(() => {
+    if (!started) return;
+    // total animation length before navigating (ms)
+    const timer = setTimeout(() => router.push('/portfolio'), 4200);
+    return () => clearTimeout(timer);
+  }, [started, router]);
+
   return (
-    <div className="relative min-h-screen bg-black overflow-hidden">
-      <Suspense fallback={
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="text-white text-2xl animate-pulse">Preparing wonderland...</div>
+    <div className="landing min-h-screen flex items-center justify-center bg-white dark:bg-black">
+      <div className="scene text-center">
+        <h2 className="lead text-2xl font-semibold text-black dark:text-white">follow the rabbit...</h2>
+        <div className="rabbit-area mt-8">
+          <Rabbit enter={started} />
+          <div className={`hole ${started ? 'open' : ''}`} aria-hidden />
         </div>
-      }>
-        <AnimationController />
-      </Suspense>
-      
-      {/* Instrução fixa no bottom */}
-      <div className="fixed bottom-8 left-0 right-0 text-center pointer-events-none z-10">
-        <p className="text-white/80 text-sm font-mono animate-pulse">
-          click anywhere to follow the white rabbit
-        </p>
+        <button
+          className="mt-10 px-6 py-2 rounded-full bg-black text-white hover:bg-red-600"
+          onClick={() => setStarted(true)}
+        >
+          Enter
+        </button>
+        <p className="mt-6 text-sm text-zinc-500 dark:text-zinc-400">...into the rabbit hole.</p>
       </div>
     </div>
   );
